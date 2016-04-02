@@ -5,14 +5,15 @@ SOURCES=dbug.c debugger.c
 OBJECTS_FOLDER=obj
 OBJECTS=$(patsubst %, $(OBJECTS_FOLDER)/%, $(SOURCES:.c=.o))
 OUT_FOLDER=bin
+TARGET=dbug
 RM=rm -fr
 
-all: $(OBJECTS) dbug
+all: $(OBJECTS) $(TARGET)
 
 $(OBJECTS_FOLDER)/%.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-dbug: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	$(CC) -o $(OUT_FOLDER)/$@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
