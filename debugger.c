@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "debugger.h"
 #include "util.h"
+#include "process.h"
 
 void init_debugger(char *executable)
 {
@@ -32,12 +33,6 @@ void start_target(char *executable)
     execl(executable, executable, NULL);
 }
 
-struct user_regs_struct get_registers(pid_t pid)
-{
-    struct user_regs_struct registers;
-    ptrace(PTRACE_GETREGS, pid, 0, &registers);
-    return registers;
-}
 
 void attach_debugger(pid_t pid)
 {
