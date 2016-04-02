@@ -13,4 +13,5 @@
 #define log_info(M, ...) fprintf(stderr, "[INFO] (%s:%s:%d) " M "\n", ERROR_INFO, ##__VA_ARGS__)
 
 #define SUCCESS 0
+#define ERROR -1
 #endif
