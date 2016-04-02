@@ -21,6 +21,15 @@ void init_debugger(char *executable)
 
 int start_target(char *executable)
 {
+    printf("Starting %s\n", executable);
+
+    // Allow other programs to trace this process.
+    if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
+        perror("ptrace");
+        return -1;
+    }
+
+    execl(executable, executable, NULL);
     return SUCCESS;
 }
 
