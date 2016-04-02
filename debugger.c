@@ -47,7 +47,8 @@ void attach_debugger(pid_t pid)
     // Wait for the process to change state, so that we know when it goes to
     // the next (in this case, first) instruction.
     wait(&process_status);
-    do {
+    while (WIFSTOPPED(process_status))
+    {
         struct user_regs_struct registers = get_registers(pid);
         unsigned curr_instr = ptrace(PTRACE_PEEKTEXT, pid, registers.rip, 0);
         log_info("icount = %u, EIP = 0x%08x. instr = 0x%08x", intr_count, registers.rip, curr_instr);
@@ -57,9 +58,9 @@ void attach_debugger(pid_t pid)
             return;
         }
 
-        wait(&process_status);
         intr_count++;
-    } while (WIFSTOPPED(process_status));
+        wait(&process_status);
+    };
 
     return;
 }
