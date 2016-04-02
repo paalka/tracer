@@ -18,7 +18,7 @@ void init_debugger(char *executable)
 
 int start_target(char *executable)
 {
-    return 0;
+    return SUCCESS;
 }
 
 void attach_debugger(pid_t pid)
