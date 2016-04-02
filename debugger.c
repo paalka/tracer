@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/reg.h>
 #include <sys/user.h>
 #include <unistd.h>
@@ -42,4 +43,25 @@ struct user_regs_struct get_registers(pid_t pid)
 
 void attach_debugger(pid_t pid)
 {
+    int process_status;
+    unsigned intr_count = 0;
+
+    // Wait for the process to change state, so that we know when it goes to
+    // the next (in this case, first) instruction.
+    wait(&process_status);
+    do {
+        struct user_regs_struct registers = get_registers(pid);
+        unsigned curr_instr = ptrace(PTRACE_PEEKTEXT, pid, registers.rip, 0);
+        fprintf(stdout, "icount = %u, EIP = 0x%08x. instr = 0x%08x\n", intr_count, registers.rip, curr_instr);
+
+        if (ptrace(PTRACE_SINGLESTEP, pid, 0, 0) < 0) {
+            perror("ptrace");
+            return;
+        }
+
+        wait(&process_status);
+        intr_count++;
+    } while (WIFSTOPPED(process_status));
+
+    return;
 }
