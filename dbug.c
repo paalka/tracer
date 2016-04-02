@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
     if (argc < 2) {
-        print_error("Name of program to debug was not provided!\n");
+        log_error("Name of program to debug was not provided!");
         return -1;
     }
 
