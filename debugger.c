@@ -28,8 +28,7 @@ void attach_debugger(pid_t child_pid)
     uintptr_t addr = 0x4000c6;
     breakpoint_t *new_bp = create_breakpoint(addr, child_pid);
 
-    ptrace(PTRACE_CONT, child_pid, 0, 0);
-    wait(&wait_status);
+    wait_status = continue_execution(new_bp->pid);
 
     if (WIFSTOPPED(wait_status)) {
         log_info("Child got a signal: %d\n", WSTOPSIG(wait_status));

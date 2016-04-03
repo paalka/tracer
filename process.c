@@ -1,4 +1,5 @@
 #include <sys/ptrace.h>
+#include <sys/wait.h>
 #include "process.h"
 #include "util.h"
 
@@ -40,13 +41,15 @@ void start_target(const char *executable)
 
 int continue_execution(pid_t target_pid)
 {
+    int process_status;
     int return_code = ptrace(PTRACE_CONT, target_pid, 0, 0);
+    wait(&process_status);
+
     if (return_code < 0) {
         log_error("Could not continue execution.");
         perror("ptrace");
-        return ERROR;
+        return process_status;
     } else {
-        log_info("Continuing execution of: %d", target_pid);
-        return SUCCESS;
+        return process_status;
     }
 }

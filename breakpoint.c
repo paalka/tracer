@@ -47,8 +47,7 @@ int resume_after_breakpoint(breakpoint_t* bp)
     regs.NEXT_INST_PTR--;
     set_registers(regs, bp->pid);
 
-    continue_execution(bp->pid);
-    wait(&process_status);
+    process_status = continue_execution(bp->pid);
 
     if (WIFEXITED(process_status)) {
         log_info("Child exited\n");
