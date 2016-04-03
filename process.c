@@ -42,9 +42,11 @@ int continue_execution(pid_t target_pid)
 {
     int return_code = ptrace(PTRACE_CONT, target_pid, 0, 0);
     if (return_code < 0) {
+        log_error("Could not continue execution.");
         perror("ptrace");
         return ERROR;
     } else {
+        log_info("Continuing execution of: %d", target_pid);
         return SUCCESS;
     }
 }
