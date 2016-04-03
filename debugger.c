@@ -1,8 +1,4 @@
-#include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/reg.h>
-#include <sys/user.h>
-#include <unistd.h>
 #include <sys/ptrace.h>
 #include <stdio.h>
 #include <stdint.h>
