@@ -3,6 +3,8 @@
 #include "process.h"
 #include "util.h"
 
+#define NO_MORE_ARGS NULL
+
 struct user_regs_struct get_registers(pid_t pid)
 {
     struct user_regs_struct registers;
@@ -36,7 +38,7 @@ void start_target(const char *executable)
         return;
     }
 
-    execl(executable, executable, NULL);
+    execl(executable, executable, NO_MORE_ARGS);
 }
 
 int continue_execution(pid_t target_pid)
