@@ -35,8 +35,27 @@ void delete_breakpoint(breakpoint_t *breakpoint)
     free(breakpoint);
 }
 
-void resume_after_breakpoint(breakpoint_t *breakpoint)
+int resume_after_breakpoint(breakpoint_t* bp)
 {
-    struct user_regs_struct registers;
+    struct user_regs_struct regs = get_registers(bp->pid);
+    int process_status;
 
+    remove_breakpoint(bp);
+
+    // Rewind the instruction pointer.
+    regs.NEXT_INST_PTR--;
+    ptrace(PTRACE_SETREGS, bp->pid, 0, &regs);
+
+    continue_execution(bp->pid);
+    wait(&process_status);
+
+    if (WIFEXITED(process_status)) {
+        log_info("Child exited\n");
+    }
+    else {
+        log_info("Unexpected signal\n");
+        return ERROR;
+    }
+
+    return SUCCESS;
 }

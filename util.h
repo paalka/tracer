@@ -15,6 +15,8 @@
 #define SUCCESS 0
 #define ERROR -1
 
+#define NEXT_INST_PTR rip
+
 #define TRAP_MASK ~(0xFF)
 #define TRAP_INST 0xCC
 

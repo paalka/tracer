@@ -13,5 +13,6 @@ typedef struct {
 
 breakpoint_t* create_breakpoint(uintptr_t addr, pid_t pid);
 void remove_breakpoint(breakpoint_t *bp_to_remove);
+int resume_after_breakpoint(breakpoint_t *breakpoint);
 
 #endif
