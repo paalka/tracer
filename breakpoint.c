@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <sys/ptrace.h>
+#include <sys/wait.h>
 #include <sys/user.h>
 
 #include "breakpoint.h"
