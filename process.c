@@ -27,7 +27,7 @@ int do_single_step(pid_t pid)
 
 void start_target(const char *executable)
 {
-    printf("Starting %s\n", executable);
+    log_info("Starting %s", executable);
 
     // Allow other programs to trace this process.
     if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
