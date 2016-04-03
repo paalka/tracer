@@ -6,11 +6,6 @@
 #include "util.h"
 #include "process.h"
 
-#define TRAP_MASK 0xFFFFFFFFFFFFFF00
-#define TRAP_INST 0xCC
-
-#define LAST_TWO_BITS_OF(data) (TRAP_MASK & data)
-
 breakpoint_t *create_breakpoint(unsigned addr, pid_t pid)
 {
     breakpoint_t *new_bp = malloc(sizeof(breakpoint_t));

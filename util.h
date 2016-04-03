@@ -14,4 +14,9 @@
 
 #define SUCCESS 0
 #define ERROR -1
+
+#define TRAP_MASK ~(0xFF)
+#define TRAP_INST 0xCC
+
+#define LAST_TWO_BITS_OF(data) (TRAP_MASK & data)
 #endif
