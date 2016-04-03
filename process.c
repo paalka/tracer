@@ -14,6 +14,19 @@ void set_registers(struct user_regs_struct new_registers, pid_t pid)
     ptrace(PTRACE_SETREGS, pid, 0, new_registers);
 }
 
+void start_target(const char *executable)
+{
+    printf("Starting %s\n", executable);
+
+    // Allow other programs to trace this process.
+    if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
+        log_error("Could not enable ptrace for this process.");
+        perror("ptrace");
+        return;
+    }
+
+    execl(executable, executable, NULL);
+}
 
 int continue_execution(pid_t target_pid)
 {

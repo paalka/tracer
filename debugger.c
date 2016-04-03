@@ -23,19 +23,9 @@ void init_debugger(char *executable)
     }
 }
 
-void start_target(char *executable)
 {
-    printf("Starting %s\n", executable);
 
-    // Allow other programs to trace this process.
-    if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
-        perror("ptrace");
-    }
     uintptr_t addr = 0x4000c6;
-
-    execl(executable, executable, NULL);
-}
-
 
 void attach_debugger(pid_t pid)
 {
