@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=-Wall -g -std=c99
 LIBS=
-SOURCES=dbug.c debugger.c breakpoint.c process.c
+SOURCES=debugger.c breakpoint.c process.c
 OBJECTS_FOLDER=obj
 OBJECTS=$(patsubst %, $(OBJECTS_FOLDER)/%, $(SOURCES:.c=.o))
 OUT_FOLDER=bin

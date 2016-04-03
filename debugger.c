@@ -46,3 +46,13 @@ void attach_debugger(pid_t child_pid)
     resume_after_breakpoint(new_bp);
     delete_breakpoint(new_bp);
 }
+
+int main(int argc, char** argv)
+{
+    if (argc < 2) {
+        log_error("Name of program to debug was not provided!");
+        return -1;
+    }
+
+    init_debugger(argv[1]);
+}
