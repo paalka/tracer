@@ -15,9 +15,8 @@ breakpoint_t *create_breakpoint(uintptr_t addr, pid_t pid)
     new_bp->pid = pid;
     new_bp->orig_data = ptrace(PTRACE_PEEKTEXT, pid, addr, 0);
 
-    // Add the 'int 3' instruction to the address.
+    // Make the instruction at this address into a 'int 3' instruction.
     new_bp->trap_data = (LAST_TWO_BITS_OF(new_bp->orig_data) | TRAP_INST);
-
     ptrace(PTRACE_POKETEXT, pid, addr, new_bp->trap_data);
 
     return new_bp;
