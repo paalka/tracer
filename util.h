@@ -15,6 +15,10 @@
 #define SUCCESS 0
 #define ERROR -1
 
+#define NO_ADDR 0
+#define NO_DATA 0
+#define THIS_PID 0
+
 #define NEXT_INST_PTR rip
 
 #define TRAP_MASK ~(0xFF)

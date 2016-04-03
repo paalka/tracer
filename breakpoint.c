@@ -13,7 +13,7 @@ breakpoint_t *create_breakpoint(uintptr_t addr, pid_t pid)
     breakpoint_t *new_bp = malloc(sizeof(breakpoint_t));
     new_bp->addr = addr;
     new_bp->pid = pid;
-    new_bp->inst = ptrace(PTRACE_PEEKTEXT, pid, addr, 0);
+    new_bp->inst = ptrace(PTRACE_PEEKTEXT, pid, addr, NO_DATA);
 
     // Make the instruction at this address into a 'int 3' instruction.
     new_bp->trap_inst = (LAST_TWO_BITS_OF(new_bp->inst) | TRAP_INST);
