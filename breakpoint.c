@@ -24,9 +24,10 @@ breakpoint_t *create_breakpoint(uintptr_t addr, pid_t pid)
 
 void remove_breakpoint(breakpoint_t *bp_to_remove)
 {
-    ptrace(PTRACE_POKETEXT, bp_to_remove->pid, bp_to_remove->addr,
-           (LAST_TWO_BITS_OF(bp_to_remove->trap_data)
-            | (bp_to_remove->orig_data & 0xFF)));
+    ptrace(PTRACE_POKETEXT,
+           bp_to_remove->pid,
+           bp_to_remove->addr,
+           bp_to_remove->orig_data);
 
 }
 
