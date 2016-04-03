@@ -22,16 +22,16 @@ void init_debugger(char *executable)
 
 void attach_debugger(pid_t child_pid)
 {
-    int wait_status;
-    wait(&wait_status);
+    int process_status;
+    wait(&process_status);
 
     uintptr_t addr = 0x4000c6;
     breakpoint_t *new_bp = create_breakpoint(addr, child_pid);
 
-    wait_status = continue_execution(new_bp->pid);
+    process_status = continue_execution(new_bp->pid);
 
-    if (WIFSTOPPED(wait_status)) {
-        log_info("Child got a signal: %d\n", WSTOPSIG(wait_status));
+    if (WIFSTOPPED(process_status)) {
+        log_info("Child got a signal: %d\n", WSTOPSIG(process_status));
     }
     else {
         perror("wait");
