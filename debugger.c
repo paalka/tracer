@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/ptrace.h>
 #include <stdio.h>
+#include <stdint.h>
+
 #include "debugger.h"
 #include "util.h"
 #include "process.h"
@@ -29,6 +31,7 @@ void start_target(char *executable)
     if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
         perror("ptrace");
     }
+    uintptr_t addr = 0x4000c6;
 
     execl(executable, executable, NULL);
 }

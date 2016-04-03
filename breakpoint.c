@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdint.h>
 #include <sys/ptrace.h>
 #include <sys/user.h>
 
@@ -6,7 +7,7 @@
 #include "util.h"
 #include "process.h"
 
-breakpoint_t *create_breakpoint(unsigned addr, pid_t pid)
+breakpoint_t *create_breakpoint(uintptr_t addr, pid_t pid)
 {
     breakpoint_t *new_bp = malloc(sizeof(breakpoint_t));
     new_bp->addr = addr;
