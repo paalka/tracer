@@ -45,7 +45,7 @@ int resume_after_breakpoint(breakpoint_t* bp)
 
     // Rewind the instruction pointer.
     regs.NEXT_INST_PTR--;
-    ptrace(PTRACE_SETREGS, bp->pid, 0, &regs);
+    set_registers(regs, bp->pid);
 
     continue_execution(bp->pid);
     wait(&process_status);

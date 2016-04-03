@@ -11,7 +11,7 @@ struct user_regs_struct get_registers(pid_t pid)
 
 void set_registers(struct user_regs_struct new_registers, pid_t pid)
 {
-    ptrace(PTRACE_SETREGS, pid, 0, new_registers);
+    ptrace(PTRACE_SETREGS, pid, 0, &new_registers);
 }
 
 int do_single_step(pid_t pid)
