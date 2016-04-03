@@ -9,6 +9,12 @@ struct user_regs_struct get_registers(pid_t pid)
     return registers;
 }
 
+void set_registers(struct user_regs_struct new_registers, pid_t pid)
+{
+    ptrace(PTRACE_SETREGS, pid, 0, new_registers);
+}
+
+
 int continue_execution(pid_t target_pid)
 {
     int return_code = ptrace(PTRACE_CONT, target_pid, 0, 0);
