@@ -14,6 +14,16 @@ void set_registers(struct user_regs_struct new_registers, pid_t pid)
     ptrace(PTRACE_SETREGS, pid, 0, new_registers);
 }
 
+int do_single_step(pid_t pid)
+{
+    if (ptrace(PTRACE_SINGLESTEP, pid, 0, 0)) {
+            perror("ptrace");
+            return ERROR;
+    } else {
+        return SUCCESS;
+    }
+}
+
 void start_target(const char *executable)
 {
     printf("Starting %s\n", executable);
