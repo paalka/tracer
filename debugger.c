@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include "debugger.h"
+#include "breakpoint.h"
 #include "util.h"
 #include "process.h"
 
@@ -23,32 +24,25 @@ void init_debugger(char *executable)
     }
 }
 
+void attach_debugger(pid_t child_pid)
 {
+    int wait_status;
+    wait(&wait_status);
 
     uintptr_t addr = 0x4000c6;
+    breakpoint_t *new_bp = create_breakpoint(addr, child_pid);
 
-void attach_debugger(pid_t pid)
-{
-    int process_status;
-    unsigned intr_count = 0;
+    ptrace(PTRACE_CONT, child_pid, 0, 0);
+    wait(&wait_status);
 
-    // Wait for the process to change state, so that we know when it goes to
-    // the next (in this case, first) instruction.
-    wait(&process_status);
-    while (WIFSTOPPED(process_status))
-    {
-        struct user_regs_struct registers = get_registers(pid);
-        unsigned curr_instr = ptrace(PTRACE_PEEKTEXT, pid, registers.rip, 0);
-        log_info("icount = %u, EIP = 0x%08x. instr = 0x%08x", intr_count, registers.rip, curr_instr);
+    if (WIFSTOPPED(wait_status)) {
+        log_info("Child got a signal: %d\n", WSTOPSIG(wait_status));
+    }
+    else {
+        perror("wait");
+        return;
+    }
 
-        if (ptrace(PTRACE_SINGLESTEP, pid, 0, 0) < 0) {
-            perror("ptrace");
-            return;
-        }
-
-        intr_count++;
-        wait(&process_status);
-    };
-
-    return;
+    resume_after_breakpoint(new_bp);
+    delete_breakpoint(new_bp);
 }
