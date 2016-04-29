@@ -6,8 +6,8 @@
 
 typedef struct {
       uintptr_t addr;
-      uintptr_t inst;
-      uintptr_t trap_inst;
+      uintptr_t instr;
+      uintptr_t trap_instr;
       pid_t pid;
 } breakpoint_t;
 

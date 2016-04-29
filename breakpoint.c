@@ -13,11 +13,12 @@ breakpoint_t *create_breakpoint(uintptr_t addr, pid_t pid)
     breakpoint_t *new_bp = malloc(sizeof(breakpoint_t));
     new_bp->addr = addr;
     new_bp->pid = pid;
-    new_bp->inst = ptrace(PTRACE_PEEKTEXT, pid, addr, NO_DATA);
+    new_bp->instr = ptrace(PTRACE_PEEKTEXT, pid, addr, NO_DATA);
 
-    // Make the instruction at this address into a 'int 3' instruction.
-    new_bp->trap_inst = (LAST_TWO_BITS_OF(new_bp->inst) | TRAP_INST);
-    ptrace(PTRACE_POKETEXT, pid, addr, new_bp->trap_inst);
+    // Make the instruction at this address into a 'int 3' i.e. breakpoint
+    // instruction.
+    new_bp->trap_instr = (LAST_TWO_BITS_OF(new_bp->instr) | TRAP_INST);
+    ptrace(PTRACE_POKETEXT, pid, addr, new_bp->trap_instr);
 
     return new_bp;
 }
@@ -27,7 +28,7 @@ void remove_breakpoint(breakpoint_t *bp_to_remove)
     ptrace(PTRACE_POKETEXT,
            bp_to_remove->pid,
            bp_to_remove->addr,
-           bp_to_remove->inst);
+           bp_to_remove->instr);
 
 }
 
