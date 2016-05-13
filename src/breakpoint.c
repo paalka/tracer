@@ -4,9 +4,9 @@
 #include <sys/wait.h>
 #include <sys/user.h>
 
-#include "breakpoint.h"
-#include "util.h"
-#include "process.h"
+#include "../include/breakpoint.h"
+#include "../include/util.h"
+#include "../include/process.h"
 
 breakpoint_t *create_breakpoint(uintptr_t addr, pid_t pid)
 {

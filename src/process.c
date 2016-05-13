@@ -1,7 +1,8 @@
 #include <sys/ptrace.h>
 #include <sys/wait.h>
-#include "process.h"
-#include "util.h"
+
+#include "../include/process.h"
+#include "../include/util.h"
 
 #define NO_MORE_ARGS NULL
 

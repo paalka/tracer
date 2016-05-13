@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "debugger.h"
-#include "breakpoint.h"
-#include "util.h"
-#include "process.h"
+#include "../include/debugger.h"
+#include "../include/breakpoint.h"
+#include "../include/util.h"
+#include "../include/process.h"
 
 void init_debugger(char *executable)
 {
