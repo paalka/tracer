@@ -36,7 +36,7 @@ void attach_debugger(pid_t child_pid)
     process_status = continue_execution(new_bp->pid);
 
     if (WIFSTOPPED(process_status)) {
-        log_info("Child got a signal: %d\n", WSTOPSIG(process_status));
+        log_info("Child got a signal: %d", WSTOPSIG(process_status));
     }
     else {
         perror("wait");
