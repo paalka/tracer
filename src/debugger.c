@@ -22,8 +22,8 @@ void init_debugger(char *executable)
 
 void attach_debugger(pid_t child_pid)
 {
-    int process_status;
     wait(&process_status);
+    int process_status = NULL;
 
     uintptr_t addr = 0x4000c6;
     breakpoint_t *new_bp = create_breakpoint(addr, child_pid);
