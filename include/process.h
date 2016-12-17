@@ -1,11 +1,7 @@
 #ifndef _PROCESS_H
 #define _PROCESS_H
 
-#include <sys/types.h>
 #include <sys/user.h>
-
-#include <stdint.h>
-#include <sys/types.h>
 
 #include "breakpoint.h"
 

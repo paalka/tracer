@@ -1,10 +1,6 @@
-#include <sys/wait.h>
-#include <sys/ptrace.h>
-#include <stdint.h>
 #include <stdlib.h>
 
 #include "../include/util.h"
-#include "../include/process.h"
 #include "../include/prompt.h"
 
 void init_debugger(struct program_context *context)

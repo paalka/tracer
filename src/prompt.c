@@ -1,9 +1,6 @@
 #include "../include/dbg.h"
 #include "../include/prompt.h"
-#include "../include/process.h"
 #include "../include/debugger.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 char **tokenize_str(char line[])

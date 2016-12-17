@@ -1,6 +1,5 @@
 #ifndef _DEBUGGER_H
 #define _DEBUGGER_H
-#include <sys/types.h>
 #include <stdint.h>
 #include "../include/prompt.h"
 
