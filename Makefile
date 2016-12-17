@@ -2,7 +2,7 @@ CC=cc
 CFLAGS=-Wall -g -std=c99
 LIBS=
 
-SOURCES=debugger.c breakpoint.c process.c
+SOURCES=debugger.c breakpoint.c process.c prompt.c
 SOURCE_FOLDER=src
 
 OBJECTS_FOLDER=obj

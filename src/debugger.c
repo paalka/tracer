@@ -1,58 +1,52 @@
 #include <sys/wait.h>
 #include <sys/ptrace.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-#include "../include/debugger.h"
-#include "../include/breakpoint.h"
 #include "../include/util.h"
 #include "../include/process.h"
+#include "../include/prompt.h"
 
-void init_debugger(char *executable)
+void init_debugger(struct program_context *context)
 {
-    pid_t child_pid = fork();
+  pid_t child_pid = fork();
 
-    if (child_pid == 0) {
-        start_target(executable);
+  if (child_pid == 0) {
+    start_target(context->target_program);
+  } else if (child_pid > 0) {
+    context->pid = child_pid;
+
+    stop_target(child_pid);
+    context->breakpoints = malloc(sizeof(breakpoint_t) * context->num_breakpoints);
+    for (size_t i = 0; i < context->num_breakpoints; i++) {
+      breakpoint_t *new_bp = create_breakpoint(context->bp_addrs[i], child_pid);
+      context->breakpoints[i] = new_bp;
     }
-    else if (child_pid > 0) {
-        attach_debugger(child_pid);
-    }
+    continue_execution(child_pid);
+  }
 }
 
-void attach_debugger(pid_t child_pid)
+void add_breakpoint(struct program_context *program_context, uintptr_t new_bp_addr)
 {
-    int process_status = NULL;
-    int wait_status =  wait(&process_status);
+  size_t curr_num_bps = program_context->num_breakpoints;
+  for (size_t i = 0; i < curr_num_bps; i++) {
+    if (program_context->bp_addrs[i] == 0) {
+	program_context->bp_addrs[i] = new_bp_addr;
+	return;
+      }
+  }
 
-    if (wait_status < 0) {
-        log_error("Failed waiting for process: %d", child_pid);
-        return;
-    }
-
-    uintptr_t addr = 0x4000c6;
-    breakpoint_t *new_bp = create_breakpoint(addr, child_pid);
-
-    process_status = continue_execution(new_bp->pid);
-
-    if (WIFSTOPPED(process_status)) {
-        log_info("Child got a signal: %d", WSTOPSIG(process_status));
-    }
-    else {
-        perror("wait");
-        return;
-    }
-
-    resume_after_breakpoint(new_bp);
-    delete_breakpoint(new_bp);
+  program_context->bp_addrs = realloc(program_context->bp_addrs, curr_num_bps*2);
+  program_context->bp_addrs[curr_num_bps+1] = new_bp_addr;
+  program_context->num_breakpoints = curr_num_bps*2;
 }
-
+ 
 int main(int argc, char** argv)
 {
-    if (argc < 2) {
-        log_error("Name of program to debug was not provided!");
-        return -1;
-    }
+  if (argc < 2) {
+    log_error("Name of program to debug was not provided!");
+    return -1;
+  }
 
-    init_debugger(argv[1]);
+  run_main_loop(argv[1]);
 }
