@@ -10,7 +10,7 @@ OBJECTS=$(patsubst %, $(OBJECTS_FOLDER)/%, $(SOURCES:.c=.o))
 
 OUT_FOLDER=bin
 
-TARGET=dbug
+TARGET=tracer
 RM=rm -fr
 
 all: $(OBJECTS) $(TARGET)
