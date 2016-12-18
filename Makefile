@@ -11,7 +11,7 @@ OBJECTS=$(patsubst %, $(OBJECTS_FOLDER)/%, $(SOURCES:.c=.o))
 OUT_FOLDER=bin
 
 TARGET=tracer
-RM=rm -fr
+RM=rm
 
 all: $(OBJECTS) $(TARGET)
 
